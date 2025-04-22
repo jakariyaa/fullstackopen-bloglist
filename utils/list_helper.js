@@ -20,6 +20,41 @@ const favoriteBlog = (blogs) => {
   return favoriteBlog
 }
 
+const mostBlogs = (blogs) => {
+
+  const mostBlogs = { author: '', blogs: 0 }
+
+  const totalBlogs = blogs.reduce((acc, cur) => {
+    acc[cur.author] = (acc[cur.author] || 0) + 1
+    return acc
+  }, {})
+
+  for (const author in totalBlogs) {
+    if (totalBlogs[author] > mostBlogs.blogs) {
+      mostBlogs.author = author
+      mostBlogs.blogs = totalBlogs[author]
+    }
+  }
+
+  return mostBlogs
+}
+
+const mostLikes = (blogs) => {
+  const mostLikes = { author: '', likes: 0 }
+  const totalLikes = blogs.reduce((acc, cur) => {
+    acc[cur.author] = (acc[cur.author] || 0) + cur.likes
+    return acc
+  }, {})
+
+  for (const author in totalLikes) {
+    if (totalLikes[author] > mostLikes.likes) {
+      mostLikes.author = author
+      mostLikes.likes = totalLikes[author]
+    }
+  }
+  return mostLikes
+}
+
 module.exports = {
   dummy,
   totalLikes,
