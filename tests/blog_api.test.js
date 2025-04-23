@@ -94,9 +94,37 @@ test('bad request when title or url missing', async () => {
     .expect(400)
 
   assert.strictEqual(response.status, 400)
-
 })
+
+test('delete of blog succeeds with status 204', async () => {
+  let blogResponse = await api.get('/api/blogs')
+  const blog = blogResponse.body[0]
+
+  const response = await api
+    .delete(`/api/blogs/${blog.id}`)
+    .expect(204)
+
+  blogResponse = await api.get('/api/blogs')
+
+  assert.strictEqual(response.status, 204)
+  assert(!blogResponse.body.includes(blog))
+})
+
+test('update of note with HTTP/PUT', async () => {
+  let blogResponse = await api.get('/api/blogs')
+  const blog = blogResponse.body[0]
+  blog.title = 'Hello Testing 92309023'
+
+  await api
+    .put(`/api/blogs/${blog.id}`)
+    .send(blog)
+
+  const response = await api.get('/api/blogs')
+  assert.strictEqual(response.body[0].title, blog.title)
+})
+
 
 after(async () => {
   await mongoose.connection.close()
 })
+
