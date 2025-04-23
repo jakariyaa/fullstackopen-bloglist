@@ -65,6 +65,38 @@ test('a new blog post created by HTTP/POST', async () => {
   assert.deepStrictEqual(newBlog, blog)
 })
 
+test('zero if the likes property is missing', async () => {
+  const blog = {
+    title: 'Mastering Fullstack',
+    author: 'Jakariya Abbas',
+    url: 'https://jakariya.eu.org/'
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(blog)
+    .expect(201)
+
+  const response = await api.get('/api/blogs')
+  const likes = response.body[response.body.length - 1].likes
+  assert.strictEqual(likes, 0)
+})
+
+test('bad request when title or url missing', async () => {
+  const blog = {
+    author: 'Jakariya Abbas',
+    likes: 999
+  }
+
+  const response = await api
+    .post('/api/blogs')
+    .send(blog)
+    .expect(400)
+
+  assert.strictEqual(response.status, 400)
+
+})
+
 after(async () => {
   await mongoose.connection.close()
 })

@@ -9,8 +9,15 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response) => {
   const blog = new Blog(request.body)
-  const result = await blog.save()
-  response.status(201).json(result)
+  try {
+    const result = await blog.save()
+    response.status(201).json(result)
+  } catch (error) {
+    response.status(400).end({
+      bad_request: 'title or url is missing',
+      error: error
+    })
+  }
 })
 
 
