@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     unique: true
   },
   name: String,
-  blog: [{
+  blogs: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Blog'
   }],

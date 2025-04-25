@@ -12,9 +12,8 @@ const api = supertest(app)
 describe('when initially one user in db', () => {
   beforeEach(async () => {
     await User.deleteMany({})
-
-    let passwordHash = await bcrypt.hash('passwo', 10)
-    let user = new User({ username: 'jack', passwordHash })
+    const passwordHash = await bcrypt.hash('passwo', 10)
+    const user = new User({ username: 'jack', passwordHash })
     await user.save()
   })
 
