@@ -111,16 +111,22 @@ test('delete of blog succeeds with status 204', async () => {
 })
 
 test('update of note with HTTP/PUT', async () => {
-  let blogResponse = await api.get('/api/blogs')
-  const blog = blogResponse.body[0]
-  blog.title = 'Hello Testing 92309023'
+  let response = await api.get('/api/blogs')
+  let blog = response.body[0]
+  blog = {
+    id: blog.id,
+    title: 'Hello Testing Testing',
+    author: 'Tester Chan',
+    url: 'https://expert_node_tester.js/',
+    likes: 9345987689213
+  }
 
   await api
     .put(`/api/blogs/${blog.id}`)
     .send(blog)
 
-  const response = await api.get('/api/blogs')
-  assert.strictEqual(response.body[0].title, blog.title)
+  response = await api.get('/api/blogs')
+  assert.deepStrictEqual(response.body[0], blog)
 })
 
 
